@@ -46,7 +46,7 @@ RUN apk add curl bash jq httpie gettext coreutils vim && \
 
 WORKDIR /root
 
-COPY README.md start-kind.sh start-kong.sh .
+COPY README.md start-kind.sh start-kong.sh delete.sh .
 COPY configs/ ./configs
 
 RUN echo 'alias deck="deck --kong-addr https://kong.127-0-0-1.nip.io/api --tls-skip-verify"' >> ~/.bashrc && \
