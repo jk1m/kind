@@ -1,2 +1,2 @@
 # kind
-Run k8s in Kubernetes in Docker (kind)
+Kubernetes in Docker (kind)
