@@ -8,7 +8,7 @@ After exec'ing into the container, run the script `start-kind.sh`:
 
 The script above will provision the following:
 - a local registry
-- a single node k8s cluster
+- a single node k8s cluster named `kind`
 - MetalLB
 
 After the script has finished, view the cluster by running:
