@@ -15,3 +15,8 @@ After the script has finished, view the cluster by running:
 ```bash
 kubectl get all -A
 ``` 
+
+## Tear down
+To tear everything down:
+- run `./delete.sh`
+- or `kind delete cluster`

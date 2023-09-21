@@ -66,3 +66,8 @@ curl -s localhost/flights | jq
 ```
 
 Outside the container, in your browser, navigate to `http://localhost/flights`.
+
+## Tear down
+To tear everything down:
+- run `./delete.sh`
+- or `kind delete cluster`
