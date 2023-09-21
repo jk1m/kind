@@ -4,21 +4,21 @@ Kubernetes in Docker (KinD) for local development
 Detailed information on KinD can be found [here](https://kind.sigs.k8s.io/).
 
 ## What's installed in the Dockerfile
-Specific versions can be found by inspecting the Dockerfile
+Specific versions, if any, can be found by inspecting the Dockerfile.
 
-KinD
-kubectl
-Helm
-Terraform
-deck
-yq
-curl
-bash
-jq
-httpie
-gettext
-coreutils
-vim
+KinD\
+kubectl\
+Helm\
+Terraform\
+deck\
+yq\
+curl\
+bash\
+jq\
+httpie\
+gettext\
+coreutils\
+vim\
 
 ## Build it
 ```bash
