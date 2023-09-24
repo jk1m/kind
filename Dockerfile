@@ -48,6 +48,7 @@ WORKDIR /root
 
 COPY README.md start-kind.sh start-kong.sh delete.sh .
 COPY configs/ ./configs
+COPY examples/ ./examples
 
 RUN echo 'alias deck="deck --kong-addr https://kong.127-0-0-1.nip.io/api --tls-skip-verify"' >> ~/.bashrc && \
   source ~/.bashrc
