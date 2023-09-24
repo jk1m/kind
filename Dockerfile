@@ -16,7 +16,7 @@ ENV KUBECTL_VER=${KUBECTL_VER}
 ENV HELM_CERT_MANAGER_VER=${HELM_CERT_MANAGER_VER}
 ENV HELM_KONG_QUICKSTART_VER=${HELM_KONG_QUICKSTART_VER}
 
-RUN apk add curl bash jq httpie gettext coreutils vim && \
+RUN apk add curl bash jq httpie gettext coreutils vim git && \
   curl -sLo ./kind https://kind.sigs.k8s.io/dl/v${KIND_VER}/kind-linux-amd64 && \
   chmod +x kind && \
   mv kind /usr/local/bin/kind && \
