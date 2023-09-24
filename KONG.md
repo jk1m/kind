@@ -43,19 +43,19 @@ The Kong manager can be accessible outside the container. In your browser, navig
 > **Note**
 > The `deck` commands below that use the `-o` flag store the output into different files for your viewing rather than overwriting anything.
 
-Convert `flights-oas.yml` to Kong's config:
+Convert `examples/flights-oas.yml` to Kong's config:
 ```bash
-deck file openapi2kong -s configs/flights-oas.yml -o configs/flights.yml
+deck file openapi2kong -s examples/flights-oas.yml -o examples/flights.yml
 ```
 
 Add tags:
 ```bash
-deck file add-tags -s configs/flights.yml "flights-service" -o configs/all.yml 
+deck file add-tags -s examples/flights.yml "flights-service" -o examples/all.yml 
 ```
 
 Sync it:
 ```bash
-deck sync --select-tag "flights-service" -s configs/all.yml
+deck sync --select-tag "flights-service" -s examples/all.yml
 ```
 
 In the container, hit the `flights` endpoint.

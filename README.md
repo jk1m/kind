@@ -19,7 +19,8 @@ httpie\
 gettext\
 coreutils\
 vim\
-Istio
+Istio\
+git
 
 ## Build, run, and exec into the container
 Build it
