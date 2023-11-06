@@ -2,19 +2,15 @@ ARG BASE_VER=24.0.2-dind
 FROM docker:${BASE_VER}
 
 ARG KIND_VER=0.20.0
-ARG KUBECTL_VER=1.27.1
+ARG KUBECTL_VER=1.28.0
 ARG HELM_VER=3.12.2
 ARG TF_VER=1.5.5
 ARG DECK_VER=1.25.0
 ARG YQ_VER=4.35.1
 ARG ISTIO_VER=1.18.3
-ARG HELM_CERT_MANAGER_VER=1.12.3
-ARG HELM_KONG_QUICKSTART_VER=2.26.4
 
 # "export" these vars for use in scripts
 ENV KUBECTL_VER=${KUBECTL_VER}
-ENV HELM_CERT_MANAGER_VER=${HELM_CERT_MANAGER_VER}
-ENV HELM_KONG_QUICKSTART_VER=${HELM_KONG_QUICKSTART_VER}
 
 RUN apk add curl bash jq httpie gettext coreutils vim git && \
   curl -sLo ./kind https://kind.sigs.k8s.io/dl/v${KIND_VER}/kind-linux-amd64 && \
@@ -51,6 +47,7 @@ COPY configs/ ./configs
 COPY examples/ ./examples
 
 RUN echo 'alias deck="deck --kong-addr https://kong.127-0-0-1.nip.io/api --tls-skip-verify"' >> ~/.bashrc && \
+  echo 'alias ..="cd ../"' >> >> ~/.bashrc && \
   source ~/.bashrc
 
 EXPOSE 80 443

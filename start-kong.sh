@@ -11,8 +11,10 @@ reg_name='kind-registry'
 reg_port='5001'
 if [ "$(docker inspect -f '{{.State.Running}}' "${reg_name}" 2>/dev/null || true)" != 'true' ]; then
   printf "\n>>> Creating local registry\n"
-  docker run \
-    -d --restart=always -p "127.0.0.1:${reg_port}:5000" --name "${reg_name}" \
+  docker run -d \
+    --restart=always \
+    -p "127.0.0.1:${reg_port}:5000" \
+    --name "${reg_name}" \
     registry:2
 fi
 
@@ -30,7 +32,9 @@ docker pull kindest/node:v${KUBECTL_VER}
 #
 # Note: containerd registry config dir has already been configured in configs/kind.yml
 printf "\n>>> Creating KinD cluster with local registry\n"
-kind create cluster --config configs/kind-kong.yml --image kindest/node:v${KUBECTL_VER} --name kind
+kind create cluster --config configs/kind-kong.yml \
+  --image kindest/node:v${KUBECTL_VER} \
+  --name kind
 
 # 3. Add the registry config to the nodes
 #
@@ -81,18 +85,23 @@ printf "\n>>> Provisioning kong\n"
 kubectl create namespace kong
 
 kubectl create secret generic kong-config-secret -n kong \
-    --from-literal=portal_session_conf='{"storage":"kong","secret":"super_secret_salt_string","cookie_name":"portal_session","cookie_same_site":"Lax","cookie_secure":false}' \
-    --from-literal=admin_gui_session_conf='{"storage":"kong","secret":"super_secret_salt_string","cookie_name":"admin_session","cookie_same_site":"Lax","cookie_secure":false}' \
-    --from-literal=pg_host="enterprise-postgresql.kong.svc.cluster.local" \
-    --from-literal=kong_admin_password=kong \
-    --from-literal=password=kong
+  --from-literal=portal_session_conf='{"storage":"kong","secret":"super_secret_salt_string","cookie_name":"portal_session","cookie_same_site":"Lax","cookie_secure":false}' \
+  --from-literal=admin_gui_session_conf='{"storage":"kong","secret":"super_secret_salt_string","cookie_name":"admin_session","cookie_same_site":"Lax","cookie_secure":false}' \
+  --from-literal=pg_host="enterprise-postgresql.kong.svc.cluster.local" \
+  --from-literal=kong_admin_password=kong \
+  --from-literal=password=kong
 
-kubectl create secret generic kong-enterprise-license --from-literal=license="'{}'" -n kong --dry-run=client -o yaml | kubectl apply -f -
+kubectl create secret generic kong-enterprise-license --from-literal=license="'{}'" \
+  -n kong \
+  --dry-run=client \
+  -o yaml | kubectl apply -f -
 
 helm repo add jetstack https://charts.jetstack.io ; helm repo update
 
-helm upgrade --install cert-manager jetstack/cert-manager --version v${HELM_CERT_MANAGER_VER} \
-    --set installCRDs=true --namespace cert-manager --create-namespace
+helm upgrade --install cert-manager jetstack/cert-manager \
+  --set installCRDs=true \
+  --namespace cert-manager \
+  --create-namespace
 
 bash -c "cat <<EOF | kubectl apply -n kong -f -
 apiVersion: cert-manager.io/v1
@@ -131,4 +140,12 @@ EOF"
 
 helm repo add kong https://charts.konghq.com ; helm repo update
 
-helm upgrade --install quickstart kong/kong --version ${HELM_KONG_QUICKSTART_VER} --namespace kong --values https://bit.ly/KongGatewayHelmValuesAIO
+# https://stackoverflow.com/questions/64262770/kubernetes-ingress-service-annotations
+# there's an issue with fetching the latest kong gateway helm values for "all-in-one"
+# fetch the last, known good version of the values file and store it in the configs dir
+curl -sLo configs/KongGatewayHelmValuesAIO.yml \
+  https://raw.githubusercontent.com/Kong/charts/f0e0b46f3c13d0d0324e37f22b1883197f8cb5bc/charts/kong/example-values/doc-examples/quickstart-enterprise-licensed-aio.yaml
+
+helm upgrade --install quickstart kong/kong \
+  --namespace kong \
+  --values configs/KongGatewayHelmValuesAIO.yml
