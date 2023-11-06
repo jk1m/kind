@@ -46,7 +46,7 @@ RUN apk add curl bash jq httpie gettext coreutils vim git && \
 
 WORKDIR /root
 
-COPY README.md start-kind.sh start-kong.sh delete.sh .
+COPY README.md KIND.md KONG.md start-kind.sh start-kong.sh delete.sh .
 COPY configs/ ./configs
 COPY examples/ ./examples
 

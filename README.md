@@ -39,3 +39,13 @@ docker exec -it kind bash
 With the image built and container running in detached mode:
 - to run vanilla KinD, review the docs [here](KIND.md)
 - to run Kong, review the docs [here](KONG.md)
+
+## Local registry
+The start scripts include the provisioning of a [local container registry](https://kind.sigs.k8s.io/docs/user/local-registry/).
+
+You can build images within the running `kind` container and push them to `localhost:5001` for use within the local cluster. 
+For example:
+```bash
+docker build --no-cache -t localhost:5001/my-image:0.1.0 .
+docker push localhost:5001/my-image:0.1.0
+```
