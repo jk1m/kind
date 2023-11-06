@@ -47,7 +47,7 @@ COPY configs/ ./configs
 COPY examples/ ./examples
 
 RUN echo 'alias deck="deck --kong-addr https://kong.127-0-0-1.nip.io/api --tls-skip-verify"' >> ~/.bashrc && \
-  echo 'alias ..="cd ../"' >> >> ~/.bashrc && \
+  echo 'alias ..="cd ../"' >> ~/.bashrc && \
   source ~/.bashrc
 
 EXPOSE 80 443
