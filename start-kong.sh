@@ -142,9 +142,8 @@ helm repo add kong https://charts.konghq.com ; helm repo update
 
 # https://stackoverflow.com/questions/64262770/kubernetes-ingress-service-annotations
 # there's an issue with fetching the latest kong gateway helm values for "all-in-one"
-# fetch the last, known good version of the values file and store it in the configs dir
-curl -sLo configs/KongGatewayHelmValuesAIO.yml \
-  https://raw.githubusercontent.com/Kong/charts/f0e0b46f3c13d0d0324e37f22b1883197f8cb5bc/charts/kong/example-values/doc-examples/quickstart-enterprise-licensed-aio.yaml
+# the last known good version of the values file has been stored in the configs dir
+# https://raw.githubusercontent.com/Kong/charts/f0e0b46f3c13d0d0324e37f22b1883197f8cb5bc/charts/kong/example-values/doc-examples/quickstart-enterprise-licensed-aio.yaml
 
 helm upgrade --install quickstart kong/kong \
   --namespace kong \
