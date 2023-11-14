@@ -6,6 +6,9 @@ After exec'ing into the container, run the script `start-kind.sh`:
 ./start-kind.sh
 ```
 
+> **Note**
+> `start-kind.sh` utilizes the `controller-v1.9.4` release for [ingress-nginx.yaml](https://github.com/kubernetes/ingress-nginx/blob/controller-v1.9.4/deploy/static/provider/kind/deploy.yaml)
+
 The script above will provision the following:
 - a local registry
 - a single node k8s cluster named `kind`
