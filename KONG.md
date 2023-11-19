@@ -6,6 +6,10 @@ After exec'ing into the container, run the script `start-kong.sh`:
 ./start-kong.sh
 ```
 
+> **Note**
+> `start-kong.sh` utilizes the `kong-2.29.0` release for [quickstart-enterprise-licensed-aio.yaml](https://github.com/Kong/charts/blob/kong-2.29.0/charts/kong/example-values/doc-examples/quickstart-enterprise-licensed-aio.yaml) as there is something off with kind
+> which results in warnings for `annotation "kubernetes.io/ingress.class" is deprecated, please use 'spec.ingressClassName' instead`
+
 The script above will provision the following:
 - a local registry
 - a single node k8s cluster named `kind`

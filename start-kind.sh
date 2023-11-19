@@ -76,3 +76,9 @@ sleep 60
 
 printf "\n>>> Finishing metallb creation\n"
 kubectl apply -f configs/metallb-config.yml
+
+printf "\n>>> Deploy Nginx ingress\n"
+kubectl apply -f configs/ingress-nginx.yml
+
+printf "\n>>> Deploy Nginx ingress example\n"
+kubectl apply -f configs/ingress-example.yaml
