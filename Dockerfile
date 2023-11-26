@@ -9,11 +9,13 @@ ARG DECK_VER=1.25.0
 ARG YQ_VER=4.35.1
 ARG ISTIO_VER=1.20.0
 ARG REGISTRY_NAME=kind-registry
+ARG REGISTRY_VER=2.8.3
 ARG REGISTRY_PORT_EXTERNAL=5001
 
 # "export" these vars for use in scripts
 ENV KUBECTL_VER=${KUBECTL_VER}
 ENV REGISTRY_NAME=${REGISTRY_NAME}
+ENV REGISTRY_VER=${REGISTRY_VER}
 ENV REGISTRY_PORT_EXTERNAL=${REGISTRY_PORT_EXTERNAL}
 
 RUN apk add curl bash jq httpie gettext coreutils vim git && \
@@ -49,6 +51,7 @@ WORKDIR /root
 COPY README.md KIND.md KONG.md start-kind.sh start-kong.sh delete.sh .
 COPY configs/ ./configs
 COPY examples/ ./examples
+COPY terraform/ ./terraform
 
 RUN echo 'alias deck="deck --kong-addr https://kong.127-0-0-1.nip.io/api --tls-skip-verify"' >> ~/.bashrc && \
   echo 'alias ..="cd ../"' >> ~/.bashrc && \
