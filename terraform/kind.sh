@@ -1,5 +1,7 @@
 #!/bin/bash
 
+printf "\n>>> Finish provisioning kind\n"
+
 # We want a consistent name that works from both ends, so we tell containerd to
 # alias localhost:${REGISTRY_PORT_EXTERNAL} to the registry container when pulling images
 REGISTRY_DIR="/etc/containerd/certs.d/localhost:${REGISTRY_PORT_EXTERNAL}"
