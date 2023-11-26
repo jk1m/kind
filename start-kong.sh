@@ -7,14 +7,12 @@
 # https://kind.sigs.k8s.io/docs/user/local-registry/
 
 # 1. Create registry container unless it already exists
-reg_name='kind-registry'
-reg_port='5001'
-if [ "$(docker inspect -f '{{.State.Running}}' "${reg_name}" 2>/dev/null || true)" != 'true' ]; then
+if [ "$(docker inspect -f '{{.State.Running}}' "${REGISTRY_NAME}" 2>/dev/null || true)" != 'true' ]; then
   printf "\n>>> Creating local registry\n"
   docker run -d \
     --restart=always \
-    -p "127.0.0.1:${reg_port}:5000" \
-    --name "${reg_name}" \
+    -p "127.0.0.1:${REGISTRY_PORT_EXTERNAL}:5000" \
+    --name "${REGISTRY_NAME}" \
     registry:2
 fi
 
@@ -43,19 +41,19 @@ kind create cluster --config configs/kind-kong.yml \
 # In other words: localhost in the container is not localhost on the host.
 #
 # We want a consistent name that works from both ends, so we tell containerd to
-# alias localhost:${reg_port} to the registry container when pulling images
-REGISTRY_DIR="/etc/containerd/certs.d/localhost:${reg_port}"
+# alias localhost:${REGISTRY_PORT_EXTERNAL} to the registry container when pulling images
+REGISTRY_DIR="/etc/containerd/certs.d/localhost:${REGISTRY_PORT_EXTERNAL}"
 for node in $(kind get nodes); do
   docker exec "${node}" mkdir -p "${REGISTRY_DIR}"
   cat <<EOF | docker exec -i "${node}" cp /dev/stdin "${REGISTRY_DIR}/hosts.toml"
-[host."http://${reg_name}:5000"]
+[host."http://${REGISTRY_NAME}:5000"]
 EOF
 done
 
 # 4. Connect the registry to the cluster network if not already connected
 # This allows kind to bootstrap the network but ensures they're on the same network
-if [ "$(docker inspect -f='{{json .NetworkSettings.Networks.kind}}' "${reg_name}")" = 'null' ]; then
-  docker network connect "kind" "${reg_name}"
+if [ "$(docker inspect -f='{{json .NetworkSettings.Networks.kind}}' "${REGISTRY_NAME}")" = 'null' ]; then
+  docker network connect "kind" "${REGISTRY_NAME}"
 fi
 
 # 5. Document the local registry
@@ -68,7 +66,7 @@ metadata:
   namespace: kube-public
 data:
   localRegistryHosting.v1: |
-    host: "localhost:${reg_port}"
+    host: "localhost:${REGISTRY_PORT_EXTERNAL}"
     help: "https://kind.sigs.k8s.io/docs/user/local-registry/"
 EOF
 
