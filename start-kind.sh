@@ -13,7 +13,7 @@ if [ "$(docker inspect -f '{{.State.Running}}' "${REGISTRY_NAME}" 2>/dev/null ||
     -d --restart=always \
     -p "127.0.0.1:${REGISTRY_PORT_EXTERNAL}:5000" \
     --name "${REGISTRY_NAME}" \
-    registry:2
+    registry:${REGISTRY_VER}
 fi
 
 printf "\n>>> Pulling kindest/node:v${KUBECTL_VER}\n"
