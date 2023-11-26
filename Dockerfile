@@ -4,13 +4,17 @@ FROM docker:${BASE_VER}
 ARG KIND_VER=0.20.0
 ARG KUBECTL_VER=1.28.0
 ARG HELM_VER=3.12.2
-ARG TF_VER=1.5.5
+ARG TF_VER=1.6.4
 ARG DECK_VER=1.25.0
 ARG YQ_VER=4.35.1
-ARG ISTIO_VER=1.18.3
+ARG ISTIO_VER=1.20.0
+ARG REGISTRY_NAME=kind-registry
+ARG REGISTRY_PORT_EXTERNAL=5001
 
 # "export" these vars for use in scripts
 ENV KUBECTL_VER=${KUBECTL_VER}
+ENV REGISTRY_NAME=${REGISTRY_NAME}
+ENV REGISTRY_PORT_EXTERNAL=${REGISTRY_PORT_EXTERNAL}
 
 RUN apk add curl bash jq httpie gettext coreutils vim git && \
   curl -sLo ./kind https://kind.sigs.k8s.io/dl/v${KIND_VER}/kind-linux-amd64 && \
